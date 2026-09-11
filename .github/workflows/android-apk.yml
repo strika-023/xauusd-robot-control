@@ -28,6 +28,17 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Prepare web assets
+        run: |
+          mkdir -p www
+          cp index.html www/
+          cp app.js www/
+          cp styles.css www/
+          cp manifest.webmanifest www/
+          cp sw.js www/
+          cp icon-192.svg www/
+          cp icon-512.svg www/
+
       - name: Add Android platform
         run: npx cap add android
 
