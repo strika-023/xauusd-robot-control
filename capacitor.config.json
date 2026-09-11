@@ -1,0 +1,8 @@
+{
+  "appId": "com.xauusd.robotcontrol",
+  "appName": "XAUUSD Robot Control",
+  "webDir": ".",
+  "server": {
+    "androidScheme": "https"
+  }
+}

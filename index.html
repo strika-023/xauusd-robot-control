@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#080b12">
+  <title>XAUUSD Robot Control Center</title>
+  <meta name="theme-color" content="#080b12">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<div id="app">
+  <header class="topbar">
+    <div>
+      <div class="brand">XAUUSD <span>ROBOT CONTROL</span></div>
+      <div class="sub">MT5 remote EA control center</div>
+    </div>
+    <div class="conn" id="connection"><i></i> DEMO MODE</div>
+  </header>
+
+  <main>
+    <section id="overview" class="page active">
+      <div class="hero">
+        <div><div class="eyebrow">LIVE MONITORING</div><h1>Trading Overview</h1></div>
+        <div class="status-pill" id="robotStatus">STOPPED</div>
+      </div>
+
+      <div class="metrics">
+        <article><small>BALANCE</small><strong id="balance">$1,000.00</strong></article>
+        <article><small>EQUITY</small><strong id="equity">$1,000.00</strong></article>
+        <article><small>FLOATING P/L</small><strong id="floating">$0.00</strong></article>
+        <article><small>MARGIN LEVEL</small><strong id="margin">—</strong></article>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head"><h2>Robot Controls</h2><span id="modeLabel">DEMO / SIMULATION</span></div>
+        <div class="controls">
+          <button class="primary" id="startBtn">START ROBOT</button>
+          <button id="pauseBtn">PAUSE</button>
+          <button id="stopBtn">STOP</button>
+          <button class="danger" id="closeBtn">EMERGENCY CLOSE ALL</button>
+        </div>
+      </div>
+
+      <div class="metrics compact">
+        <article><small>SYMBOL</small><strong id="symbol">XAUUSD</strong></article>
+        <article><small>PRICE</small><strong id="price">4288.42</strong></article>
+        <article><small>POSITIONS</small><strong id="positionsCount">0</strong></article>
+        <article><small>PENDING</small><strong id="ordersCount">0</strong></article>
+      </div>
+
+      <div class="grid-two">
+        <div class="panel">
+          <div class="panel-head"><h2>Active Cycle</h2></div>
+          <div class="kv"><span>Buy Grid</span><b id="buyGrid">L0</b></div>
+          <div class="kv"><span>Sell Grid</span><b id="sellGrid">L0</b></div>
+          <div class="kv"><span>Total Lots</span><b id="lots">0.00</b></div>
+          <div class="kv"><span>Basket P/L</span><b id="basket">$0.00</b></div>
+        </div>
+        <div class="panel">
+          <div class="panel-head"><h2>Risk</h2></div>
+          <div class="riskbar"><span id="riskFill"></span></div>
+          <div class="kv"><span>Drawdown</span><b id="drawdown">0.0%</b></div>
+          <div class="kv"><span>Max Drawdown</span><b id="maxDD">10.0%</b></div>
+          <div class="kv"><span>Margin Usage</span><b id="marginUsage">0.0%</b></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="grid" class="page">
+      <div class="hero"><div><div class="eyebrow">GRID STATE</div><h1>XAUUSD Grid</h1></div></div>
+      <div class="panel chart">
+        <div class="chart-price" id="chartPrice">4288.42</div>
+        <div class="levels" id="levels"></div>
+      </div>
+      <div class="grid-two">
+        <div class="panel"><div class="panel-head"><h2>BUY GRID</h2></div><div id="buyTable"></div></div>
+        <div class="panel"><div class="panel-head"><h2>SELL GRID</h2></div><div id="sellTable"></div></div>
+      </div>
+    </section>
+
+    <section id="positions" class="page">
+      <div class="hero"><div><div class="eyebrow">EXECUTION</div><h1>Positions & Orders</h1></div></div>
+      <div class="panel"><div class="panel-head"><h2>Open Positions</h2><span id="positionSummary">0</span></div><div id="positionsList"></div></div>
+      <div class="panel"><div class="panel-head"><h2>Pending Orders</h2><span id="orderSummary">0</span></div><div id="ordersList"></div></div>
+    </section>
+
+    <section id="risk" class="page">
+      <div class="hero"><div><div class="eyebrow">PROTECTION</div><h1>Risk & Simulation</h1></div></div>
+      <div class="panel">
+        <div class="panel-head"><h2>Risk Settings</h2></div>
+        <div class="form-grid">
+          <label>Initial Lot<input id="initialLot" type="number" step="0.01" value="0.01"></label>
+          <label>Grid Step (USD)<input id="gridStep" type="number" step="0.1" value="10"></label>
+          <label>Multiplier<input id="multiplier" type="number" step="0.1" value="1.5"></label>
+          <label>Max Grid Levels<input id="maxLevels" type="number" value="10"></label>
+          <label>Max Lot<input id="maxLot" type="number" step="0.01" value="0.50"></label>
+          <label>Max Drawdown %<input id="maxDrawdown" type="number" step="0.5" value="10"></label>
+          <label>Max Margin Usage %<input id="maxMargin" type="number" step="1" value="50"></label>
+          <label>Basket Profit $<input id="basketTarget" type="number" step="0.1" value="5"></label>
+        </div>
+        <button class="primary" id="saveRisk">SAVE CONFIGURATION</button>
+      </div>
+      <div class="panel"><div class="panel-head"><h2>Exposure Simulation</h2></div><div id="simulation"></div></div>
+    </section>
+
+    <section id="symbols" class="page">
+      <div class="hero"><div><div class="eyebrow">EA CONFIGURATION</div><h1>Symbols</h1></div></div>
+      <div class="panel symbol-card">
+        <div class="symbol-title"><b>XAUUSD</b><span>MT5</span></div>
+        <div class="form-grid">
+          <label>Detected Symbol<input id="detectedSymbol" value="XAUUSD" /></label>
+          <label>Action<select id="action"><option>BOTH</option><option>BUY</option><option>SELL</option></select></label>
+          <label>Lot Size<input id="symbolLot" type="number" step="0.01" value="0.01"></label>
+          <label>Number of Trades<input id="tradeCount" type="number" value="1"></label>
+        </div>
+        <button id="saveSymbol">SAVE SYMBOL</button>
+      </div>
+    </section>
+
+    <section id="settings" class="page">
+      <div class="hero"><div><div class="eyebrow">SYSTEM</div><h1>Settings</h1></div></div>
+      <div class="panel">
+        <div class="panel-head"><h2>Trading Environment</h2></div>
+        <label class="switchrow"><span>Live trading</span><input id="liveMode" type="checkbox"><span class="toggle"></span></label>
+        <p class="warning">Live trading requires a running MT5 terminal/EA bridge. This web app does not itself execute broker orders.</p>
+      </div>
+      <div class="panel"><div class="panel-head"><h2>MT5 Bridge Connection</h2><span id="bridgeState">DISCONNECTED</span></div>
+        <div class="form-grid">
+          <label>Bridge HTTPS URL<input id="bridgeUrl" placeholder="https://your-bridge.example.com" autocomplete="off"></label>
+          <label>Bridge Token<input id="bridgeToken" type="password" placeholder="Pairing token" autocomplete="off"></label>
+        </div>
+        <div class="controls"><button class="primary" id="connectBridge">CONNECT & VERIFY</button><button id="disconnectBridge">DISCONNECT</button></div>
+        <p class="warning">Use a bridge token, not your MT5 master password. The bridge must be online and the EA must be attached to MT5.</p>
+        <div class="kv"><span>Account</span><b id="account">—</b></div>
+        <div class="kv"><span>Server</span><b id="server">—</b></div>
+      </div>
+    </section>
+
+    <section id="logs" class="page">
+      <div class="hero"><div><div class="eyebrow">AUDIT TRAIL</div><h1>Logs</h1></div></div>
+      <div class="panel logpanel" id="logsList"></div>
+    </section>
+  </main>
+
+  <nav class="bottom">
+    <button data-page="overview" class="active">Overview</button>
+    <button data-page="grid">Grid</button>
+    <button data-page="positions">Positions</button>
+    <button data-page="risk">Risk</button>
+    <button data-page="symbols">Symbols</button>
+    <button data-page="settings">Settings</button>
+    <button data-page="logs">Logs</button>
+  </nav>
+</div>
+
+<div class="modal hidden" id="modal">
+  <div class="modal-card"><h2>Emergency Close All</h2><p>This will attempt to close all managed XAUUSD positions and cancel pending orders.</p><div class="controls"><button id="cancelModal">CANCEL</button><button class="danger" id="confirmClose">CLOSE ALL</button></div></div>
+</div>
+<script src="/app.js"></script>
+<script>if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}));}</script>
+</body>
+</html>

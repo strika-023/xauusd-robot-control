@@ -1,0 +1,13 @@
+{
+  "name": "XAUUSD Robot Control",
+  "short_name": "XAUUSD Robot",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#080b12",
+  "theme_color": "#080b12",
+  "description": "Mobile controller and monitoring dashboard for an MT5 XAUUSD EA.",
+  "icons": [
+    {"src":"icon-192.svg","sizes":"192x192","type":"image/svg+xml","purpose":"any maskable"},
+    {"src":"icon-512.svg","sizes":"512x512","type":"image/svg+xml","purpose":"any maskable"}
+  ]
+}
